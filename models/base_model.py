@@ -6,7 +6,18 @@ import uuid
 
 class BaseModel():
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+
+        if kwargs:
+            self.__dict__ = kwargs
+            t1 = datetime.fromisoformat(kwargs["updated_at"])
+            t2 = datetime.fromisoformat(kwargs["created_at"])
+
+            self.__dict__["updated_at"] = t1
+            self.__dict__["created_at"] = t2
+            del self.__dict__["__class__"]
+            return
+
         self.id = str(uuid.uuid4())
         date_time = datetime.now()
         self.created_at = date_time
