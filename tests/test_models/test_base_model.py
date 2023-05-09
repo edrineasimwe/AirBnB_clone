@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 
 import sys
-sys.path.append(".")
-
-
 import unittest
-from models.base_model import BaseModel
+
+
+sys.path.append(".")
 
 
 class TestBaseModel(unittest.TestCase):
@@ -31,4 +30,5 @@ class TestBaseModel(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    from models.base_model import BaseModel
     unittest.main()
