@@ -19,3 +19,4 @@ Mark = Person("Mark")
 Mark.setAge(30)
 
 print(Mark.getAge(), Mark.name)
+
