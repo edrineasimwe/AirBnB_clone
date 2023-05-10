@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+import models
 from datetime import datetime
 import uuid
 
@@ -23,11 +23,14 @@ class BaseModel():
         self.created_at = date_time
         self.updated_at = date_time
 
+        models.storage.new(self)
+
     def __str__(self):
         return f'[{type(self).__name__}] ({self.id}) {self.__dict__}'
 
     def save(self):
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         self.__dict__["__class__"] = str(type(self).__name__)

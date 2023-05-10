@@ -27,6 +27,18 @@ class TestBaseModel(unittest.TestCase):
         Michealnew = BaseModel(**myjson)
 
         self.assertEqual(Micheal.id, Michealnew.id)
+    
+    def test_SaveFileStorage(self):
+        pass
+
+    def test_ReloadFileStorage(self):
+        pass
+
+    def test_NewFileStorage(self):
+        pass
+
+    def test_AllFileStorage(self):
+        pass
 
 
 if __name__ == '__main__':
