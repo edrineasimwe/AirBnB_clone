@@ -3,6 +3,7 @@
 from datetime import datetime
 import json
 from ..base_model import BaseModel
+from ..user import User
 
 
 class FileStorage():
@@ -39,7 +40,12 @@ class FileStorage():
             for line in f:
                 object0 = json.loads(line)
                 for object1 in object0.values():
-                    reloadi = BaseModel(**object1)
+                    if object1["__class__"] == "BaseModel":
+                        reloadi = BaseModel(**object1)
+
+                    if object1["__class__"] == "User":
+                        reloadi = User(**object1)
+
                     datetime.fromisoformat(str(reloadi.updated_at))
                     datetime.fromisoformat(str(reloadi.created_at))
                     newentry = f'{str(type(reloadi).__name__)}.{reloadi.id}'

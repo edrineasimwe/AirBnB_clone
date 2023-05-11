@@ -4,7 +4,7 @@ from datetime import datetime
 import uuid
 
 
-class BaseModel():
+class BaseModel(object):
 
     def __init__(self, *args, **kwargs):
 

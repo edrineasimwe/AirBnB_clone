@@ -5,12 +5,13 @@ import json
 from datetime import datetime
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
 
 class HBNBCommand(cmd.Cmd):
 
     prompt = '(hbnb)'
 
-    classes = {1: "BaseModel"}
+    classes = {1: "BaseModel", 2: "User"}
     notupdatable = {1: "id", 2: "created_at", 3: "updated_at"}
 
     def emptyline(self):
@@ -37,7 +38,12 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         
-        object0 = BaseModel()
+        if args[0] == "BaseModel":
+            object0 = BaseModel()
+
+        if args[0] == "User":
+            object0 = User()
+
         print(object0.id)
         object0.my_number = 89
         object0.name = "My_Model"
@@ -64,10 +70,12 @@ class HBNBCommand(cmd.Cmd):
             for obj in json.loads(line).keys():
                 objdata = obj.split(".")
                 obj_id = objdata[1]
-                if(obj_id == args[1]):
-                    print(storage.all()[obj])
-                    f.close()
-                    return
+                print(objdata[0] == args[0])
+                if obj_id == args[1]:
+                    if objdata[0] == args[0]:
+                        print(storage.all()[obj])
+                        f.close()
+                        return
         f.close()
 
         print("** no instance found **")
@@ -102,14 +110,27 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Prints the string representation of all instances based or not based on class name"""
+        all_objs = storage.all()
+
+        if line == "":
+            for obj in all_objs.values():
+                print(obj)
+            
+            return
+
         if line not in self.classes.values():
             print("** class doesn't exist **")
             return
-        
-        all_objs = storage.all()
 
-        for obj in all_objs.values():
-            print(obj)
+        args = line.split()
+
+        if len(args) > 0:
+            for obj in all_objs.keys():
+                objdata = obj.split(".")
+                if(objdata[0] == args[0]):
+                    print(storage.all()[obj])
+            
+            return
 
     def do_convert(self, dt):
         return datetime.fromisoformat(str(dt))
@@ -149,8 +170,8 @@ class HBNBCommand(cmd.Cmd):
                     if args[2] not in obj_decode:
                         change = storage.all()[obj]
                         try:
-                            float(args[3])
-                            change.__dict__[args[2]] = float(args[3])
+                            value = float(args[3])
+                            change.__dict__[args[2]] = value
 
                         except Exception:
                             word = str(args[3])
