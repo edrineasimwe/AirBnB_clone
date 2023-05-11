@@ -4,6 +4,11 @@ from datetime import datetime
 import json
 from ..base_model import BaseModel
 from ..user import User
+from ..state import State
+from ..city import City
+from ..amenity import Amenity
+from ..place import Place
+from ..review import Review
 
 
 class FileStorage():
@@ -45,6 +50,21 @@ class FileStorage():
 
                     if object1["__class__"] == "User":
                         reloadi = User(**object1)
+
+                    if object1["__class__"] == "City":
+                        reloadi = City(**object1)
+
+                    if object1["__class__"] == "Amenity":
+                        reloadi = Amenity(**object1)
+
+                    if object1["__class__"] == "Place":
+                        reloadi = Place(**object1)
+
+                    if object1["__class__"] == "Review":
+                        reloadi = Review(**object1)
+
+                    if object1["__class__"] == "State":
+                        reloadi = State(**object1)
 
                     datetime.fromisoformat(str(reloadi.updated_at))
                     datetime.fromisoformat(str(reloadi.created_at))
