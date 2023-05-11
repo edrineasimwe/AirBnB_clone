@@ -19,6 +19,12 @@ class FileStorage():
 
     def save(self):
         f = open(self.__file_path, "w")
+
+        if len(self.__objects) == 0:
+            f.write("")
+            f.close()
+            return
+
         for obj in self.__objects.keys():
             model = {obj: self.__objects[obj].to_dict()}
             jobj = json.dumps(model)
