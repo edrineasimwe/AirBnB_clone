@@ -39,7 +39,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, line):
-        """Creates a new instance of BaseModel aves it and prints the id"""
+        """Usage - create [classname] [ID]"""
         args = line.split()
 
         if len(args) == 0:
@@ -77,8 +77,7 @@ class HBNBCommand(cmd.Cmd):
         object0.save()
 
     def do_show(self, line):
-        """Prints yhe string representation of an instances
-        based on class name and id"""
+        """Usage - show [classname] [ID]"""
         args = line.split()
 
         if len(args) == 0:
@@ -109,7 +108,7 @@ class HBNBCommand(cmd.Cmd):
         print("** no instance found **")
 
     def do_destroy(self, line):
-        """Deletes an instance based on class name and id"""
+        """Usage - destroy [classname] [ID]"""
         args = line.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -167,7 +166,7 @@ class HBNBCommand(cmd.Cmd):
         return datetime.fromisoformat(str(dt))
 
     def do_update(self, line):
-        """Updates an instance based on the class name and id"""
+        """update [ClassName] [id] [attributeName] [attributevalue]"""
         args = line.split()
         if len(args) == 0:
             print("** class name missing **")
@@ -222,6 +221,77 @@ class HBNBCommand(cmd.Cmd):
         f.close()
 
         print("** no instance found **")
+
+    def count(self, line):
+        count = 0
+        all_objs = storage.all()
+
+        if line not in self.classes.values():
+            print("** class doesn't exist **")
+            return
+
+        args = line.split()
+
+        if len(args) > 0:
+            for obj in all_objs.keys():
+                objdata = obj.split(".")
+                if(objdata[0] == args[0]):
+                    count = count + 1
+        print(count)
+
+    def default(self, line):
+        args = line.split(".")
+        second_parsing = args[1].split("(")
+ 
+        line_parsed = f'{args[0]}'
+
+        if second_parsing[0] == "all":
+            self.do_all(line_parsed)
+
+        if second_parsing[0] == "count":
+            self.count(line_parsed)
+        
+        if second_parsing[0] == "show":
+            intermediate1 = args[1].split('"')
+
+            line_parsed_extra= line_parsed + " " +intermediate1[1]
+            self.do_show(line_parsed_extra)
+
+        if second_parsing[0] == "destroy":
+            intermediate1 = args[1].split('"')
+
+            line_parsed_extra= line_parsed + " " +intermediate1[1]
+            self.do_destroy(line_parsed_extra)
+
+        if second_parsing[0] == "update":
+            start = line.split(", {")
+            
+            if len(start) == 1:
+                intermediate1 = args[1].split('"')
+                line_parsed1 = line_parsed + " " +intermediate1[1]
+                line_parsed1 += " " + intermediate1[3]
+                line_parsed1 += " " + intermediate1[5]
+
+                self.do_update(line_parsed1)
+
+            else:
+                start[1] = start[1][:-2]
+                fields = start[1].split(", ")
+                for field in fields:
+                    intermid = field.split(": ")
+                    first = intermid[1][0]
+                    if first == "'" or first == '"':
+                        first = intermid[1][1:-1]
+
+                    else:
+                        first = intermid[1]
+                    
+                    intermediate1 = args[1].split('"')
+                    line_parsed1 = line_parsed + " " +intermediate1[1]
+                    line_parsed1 += " " + intermid[0][1:-1]
+                    line_parsed1 += " " + first
+
+                self.do_update(line_parsed1)
 
 
 if __name__ == '__main__':
