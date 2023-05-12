@@ -14,6 +14,36 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
+    """
+        This is a class meant to cater for the interactive
+        side of the airBnB clone application. 
+        It only accepts a few classes and creates them ie
+
+        Classes:
+            BaseModel
+            User
+            Place
+            City
+            Review
+            Amenity
+            State
+
+        Methods or commands include:
+        show
+        all
+        update
+        destroy
+        create
+
+        Although the user can decide to use more
+        specific commands like
+        User.all()
+        Place.destroy('id')
+        City.count()
+        Amenity.update('id', attribute_name attribute_value)
+        User.update('id', {'attribute_name : attribute_value'})
+        USer.show('id')
+    """
 
     prompt = '(hbnb)'
 
@@ -162,9 +192,6 @@ class HBNBCommand(cmd.Cmd):
 
             return
 
-    def do_convert(self, dt):
-        return datetime.fromisoformat(str(dt))
-
     def do_update(self, line):
         """update [ClassName] [id] [attributeName] [attributevalue]"""
         args = line.split()
@@ -223,6 +250,12 @@ class HBNBCommand(cmd.Cmd):
         print("** no instance found **")
 
     def count(self, line):
+        """
+            A simple function that handles
+            the counting part of the 
+            <class_name>.count()
+            additional feature
+        """
         count = 0
         all_objs = storage.all()
 
@@ -240,9 +273,18 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def default(self, line):
+        """
+            This was created as part of the
+            advanced assignment
+
+            It handles the special commands such as
+            User.count()
+            Place.all()
+            and so many others
+        """
         args = line.split(".")
         second_parsing = args[1].split("(")
- 
+
         line_parsed = f'{args[0]}'
 
         if second_parsing[0] == "all":
@@ -250,27 +292,27 @@ class HBNBCommand(cmd.Cmd):
 
         if second_parsing[0] == "count":
             self.count(line_parsed)
-        
-        if second_parsing[0] == "show":
-            intermediate1 = args[1].split('"')
 
-            line_parsed_extra= line_parsed + " " +intermediate1[1]
-            self.do_show(line_parsed_extra)
+        if second_parsing[0] == "show":
+            intermediat1 = args[1].split('"')
+
+            line_parsed_ext = line_parsed + " " + intermediat1[1]
+            self.do_show(line_parsed_ext)
 
         if second_parsing[0] == "destroy":
-            intermediate1 = args[1].split('"')
+            intermediat1 = args[1].split('"')
 
-            line_parsed_extra= line_parsed + " " +intermediate1[1]
-            self.do_destroy(line_parsed_extra)
+            line_parsed_ext = line_parsed + " " + intermediat1[1]
+            self.do_destroy(line_parsed_ext)
 
         if second_parsing[0] == "update":
             start = line.split(", {")
-            
+
             if len(start) == 1:
-                intermediate1 = args[1].split('"')
-                line_parsed1 = line_parsed + " " +intermediate1[1]
-                line_parsed1 += " " + intermediate1[3]
-                line_parsed1 += " " + intermediate1[5]
+                intermediat1 = args[1].split('"')
+                line_parsed1 = line_parsed + " " + intermediat1[1]
+                line_parsed1 += " " + intermediat1[3]
+                line_parsed1 += " " + intermediat1[5]
 
                 self.do_update(line_parsed1)
 
@@ -285,9 +327,9 @@ class HBNBCommand(cmd.Cmd):
 
                     else:
                         first = intermid[1]
-                    
-                    intermediate1 = args[1].split('"')
-                    line_parsed1 = line_parsed + " " +intermediate1[1]
+
+                    intermediat1 = args[1].split('"')
+                    line_parsed1 = line_parsed + " " + intermediat1[1]
                     line_parsed1 += " " + intermid[0][1:-1]
                     line_parsed1 += " " + first
 

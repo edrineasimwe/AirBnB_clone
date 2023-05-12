@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 This module is to test the correct working of the
-BaseModel class.
+State class.
 
 It includes:
     Testing distinct uuids
@@ -18,12 +18,13 @@ import json
 import models
 from models import storage
 from models.base_model import BaseModel
+from models.state import State
 
 
-class TestBaseModel(unittest.TestCase):
+class TestState(unittest.TestCase):
     """
         This class is the one that handles
-        all the testing of the BaseModel class
+        all the testing of the State class
 
         It's methods include:
             test_UUID()
@@ -37,15 +38,15 @@ class TestBaseModel(unittest.TestCase):
         """
         Tests to see whether two instances can have the same id
         """
-        Mark = BaseModel()
-        Andrew = BaseModel()
+        Mark = State()
+        Andrew = State()
         self.assertNotEqual(Mark.id, Andrew.id)
 
     def test_Save(self):
         """
         Tests to see if an instance can be updated
         """
-        Mark = BaseModel()
+        Mark = State()
         Mark.save()
         self.assertNotEqual(Mark.created_at, Mark.updated_at)
 
@@ -54,12 +55,12 @@ class TestBaseModel(unittest.TestCase):
         Tests to see if an instance can be converted
         to and from json form
         """
-        Micheal = BaseModel()
+        Micheal = State()
         Micheal.name = "Micheal"
         old_json = json.dumps(Micheal.to_dict())
         new_json = json.loads(old_json)
 
-        Michealnew = BaseModel(**new_json)
+        Michealnew = State(**new_json)
 
         self.assertEqual(Micheal.id, Michealnew.id)
 
@@ -68,18 +69,18 @@ class TestBaseModel(unittest.TestCase):
         Tests to see if an instance can be converted to
         it's dictionary form
         """
-        Mick = BaseModel()
+        Mick = State()
 
         Mick.to_dict()
 
-        self.assertEqual(Mick.__dict__["__class__"], "BaseModel")
+        self.assertEqual(Mick.__dict__["__class__"], "State")
 
     def test_SaveStorage(self):
         """
         Tests to see if an instance can be saved
         and retrieved
         """
-        Micheal = BaseModel()
+        Micheal = State()
         Micheal.save()
 
         myobjs = storage.all()
@@ -91,5 +92,5 @@ class TestBaseModel(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    from models.base_model import BaseModel
+    from models.state import State
     unittest.main()

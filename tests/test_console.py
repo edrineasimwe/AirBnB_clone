@@ -1,19 +1,19 @@
 #!/usr/bin/python3
-
+import os
 from io import StringIO
 import unittest
 from unittest.mock import Mock, patch
 from console import HBNBCommand
 
+
 class TestConsole(unittest.TestCase):
 
     def test_Numbers(self):
-        self.assertEqual(1,1)
+        self.assertEqual(1, 1)
 
     def test_ConsoleEmptyLine(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("")
-
 
         self.assertEqual(f.getvalue(), "")
 
@@ -23,7 +23,7 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             for i in range(3):
                 HBNBCommand().onecmd("create User")
-            
+
             HBNBCommand().onecmd("all")
 
             values = f.getvalue().split("\n")
@@ -32,7 +32,6 @@ class TestConsole(unittest.TestCase):
 
             for i in range(3):
                 HBNBCommand().onecmd(f'destroy User {values[i]}')
-
 
     def test_ConsoleAllC(self):
         count = 0
@@ -90,9 +89,11 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("** no instance found **", intermediary[4])
             self.assertEqual("** attribute name missing **", intermediary[5])
             self.assertEqual("** value missing **", intermediary[6])
-            self.assertEqual("update [ClassName] [id] [attributeName] [attributevalue]", intermediary[7])
-            self.assertEqual("update [ClassName] [id] [attributeName] [attributevalue]", intermediary[7])
-            
+
+            token = "update [ClassName] [id] [attributeName] [attributevalue]"
+            self.assertEqual(token, intermediary[7])
+            self.assertEqual(token, intermediary[7])
+
             HBNBCommand().onecmd(f'destroy Place {obj_id}')
 
     def test_ConsoleCreate(self):
@@ -125,7 +126,6 @@ class TestConsole(unittest.TestCase):
         HBNBCommand().onecmd(f'destroy State {values[5]}')
         HBNBCommand().onecmd(f'destroy Amenity {values[6]}')
         HBNBCommand().onecmd(f'destroy Review {values[7]}')
-
 
     def test_ConsoleShow(self):
         with patch('sys.stdout', new=StringIO()) as f:
@@ -176,17 +176,18 @@ class TestConsole(unittest.TestCase):
 
             HBNBCommand().onecmd("help destroy")
 
-            intermediary = f.getvalue().split("\n")
+            inter = f.getvalue().split("\n")
 
-            self.assertEqual("** class name missing **", intermediary[1])
-            self.assertEqual("** class doesn't exist **", intermediary[2])
-            self.assertEqual("** instance id missing **", intermediary[3])
-            self.assertEqual("** no instance found **", intermediary[4])
-            self.assertEqual("Usage - destroy [classname] [ID]", intermediary[5])
-            self.assertEqual("Usage - destroy [classname] [ID]", intermediary[5])
+            class_msg1 = "** class name missing **"
+            class_msg2 = "** class doesn't exist **"
+            inst1 = "** instance id missing **"
+            inst2 = "** no instance found **"
+            help0 = "Usage - destroy [classname] [ID]"
 
-
-if __name__ == "__main__":
-    te = TestConsole()
-    te.test_Console()
-    #unittest.main()
+            self.assertEqual(class_msg1, inter[1])
+            self.assertEqual(class_msg2, inter[2])
+            self.assertEqual(inst1, inter[3])
+            self.assertEqual(inst2, inter[4])
+            self.assertEqual(help0, inter[5])
+            self.assertEqual(help0, inter[5])
+            os.remove('file.json')

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
     This module deals with setting up a basic structure that
     is used to give life to all other subclasses
@@ -12,7 +11,6 @@
     __str__()
     convert_to_accepted_format()
 """
-
 import models
 from datetime import datetime
 import uuid

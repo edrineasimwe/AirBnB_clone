@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    This modeule is for the User
+    This module is for the User
     They are derived from the BaseModel
     and use the initialization function
     of the parent class
