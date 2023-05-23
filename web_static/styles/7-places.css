@@ -3,7 +3,11 @@ section h1 {
 	font-size: 30px;
 }
 
+section div {
+	text-align: center;
+}
 article {
+	display: inline-block;
 	width: 390px;
 	padding: 20px;
 	margin: 20px;
