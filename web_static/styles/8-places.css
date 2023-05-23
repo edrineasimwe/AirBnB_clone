@@ -3,6 +3,14 @@ section h1 {
 	font-size: 30px;
 }
 
+.places {
+	text-align: center;
+}
+
+.user, .description, p, h3 {
+	text-align: left;
+}
+
 article {
 	display: inline-block;
 	width: 390px;
